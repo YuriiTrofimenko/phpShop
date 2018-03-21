@@ -147,3 +147,151 @@ class Customer {
 
 //$c2 = Customer::fromDB(1);
 //var_dump($c2);
+
+class Item {
+    
+    public $id
+            , $itemname
+            , $catid
+            , $pricein
+            , $pricesale
+            , $info
+            , $rate
+            , $imagepath
+            , $action;
+
+    function __construct($itemname, $catid, $pricein, $pricesale, $info, $imagepath, $rate = 0, $action = 0, $id = 0) {
+        
+        $this->id = $id;
+        $this->itemname = $itemname;
+        $this->catid = $catid;
+        $this->pricein = $pricein;
+        $this->pricesale = $pricesale;
+        $this->info = $info;
+        $this->rate = $rate;
+        $this->imagepath = $imagepath;
+        $this->action = $action;
+    }
+
+    function intoDb() : bool
+    {
+        try {
+            $pdo = Tools::connect();
+            $ps = $pdo->prepare("INSERT INTO Items (itemname, catid, pricein, pricesale, info, rate, imagepath, action)
+                                VALUES (:itemname, :catid, :pricein, :pricesale, :info, :rate, :imagepath, :action)");
+            $ar = (array) $this;
+            array_shift($ar);
+            $ps->execute($ar);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+            var_dump($e->getMessage());
+        }
+    }
+    
+    static function fromDb(int $id) : Item
+    {
+       $customer = null;
+        try {
+            $pdo = Tools::connect();
+            $ps = $pdo->prepare("SELECT * FROM Items WHERE id = ?");
+            $res = $ps->execute([$id]);
+            $row = $ps->fetch();
+            $customer =
+                    new Item($row['itemname']
+                            , $row['catid']
+                            , $row['pricein']
+                            , $row['pricesale']
+                            , $row['info']
+                            , $row['imagepath']
+                            , $row['rate']
+                            , $row['action']
+                            , $row['id']
+                         );
+            return $customer;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    
+    static function GetItems(int $catid = 0) {
+        $ps = null;
+        $items = null;
+        try {
+            $pdo = Tools::connect();
+            if ($catid == 0) {
+                $ps = $pdo->prepare('select * from items');
+                $ps->execute();
+            } else {
+                $ps = $pdo->prepare('select * from items where catid = ?');
+                $ps->execute([$catid]);
+            }
+            while ($row = $ps->fetch()) {
+                $item = new Item($row['itemname'], $row['catid'], $row['pricein'], $row['pricesale'], $row['info'], $row['imagepath'], $row['rate'], $row['action'], $row['id']);
+                $items[] = $item;
+            }
+            return $items;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    //
+    function Draw() {
+        echo "<div class='col-sm-3 col-md-3 col-lg-3' style='height:350px;margin:2px;'>";
+            echo "<div class='container'>";
+                //itemInfo.php contains detailed info about product
+                echo "<div class='row' style='margin-top:2px; background-color:#ffd2aa;'>";
+                    echo "<a href='pages/itemInfo.php?name=" . $this->id . "'class='pull-left' style='margin-left:10px;' target='_blank'>";
+                        echo $this->itemname;
+                    echo "</a>";
+                    echo "<span class='pull-right' style='marginright:10px;'>";
+                        echo $this->rate . "&nbsp;rate";
+                    echo "</span>";
+                echo "</div>";
+            
+                echo "<div style='height:100px;margin-top:2px;' class='row'>";
+                    echo "<img src='" . $this->imagepath . "' height='100px' />";
+                    echo "<span class='pull-right' style='marginleft:10px;color:red;font-size:16pt;'>";
+                        echo "$&nbsp;" . $this->pricesale;
+                    echo "</span>";
+                echo "</div>";
+                echo "<div class='row' style='margintop:10px;'>";
+                    echo "<p class='text-left col-xs-12' style='background-color:lightblue;overflow:auto;height:60px;'>";
+                        echo $this->info;
+                    echo "</p>";
+                echo "</div>";
+                //echo "<div class='row' style='margintop:2px;'>";
+                //echo "</div>";
+                echo "<div class='row' style='margintop:2px;'>";
+                    //creating cookies for the cart
+                    //will be explained later
+                    $ruser = '';
+                    if (!isset($_SESSION['reg']) || $_SESSION['reg'] == "") {
+                        $ruser = "cart_" . $this->id;
+                    } else {
+                        $ruser = $_SESSION['reg'] . "_" . $this->id;
+                    }
+                    echo "<button class='btn btn-success col-xsoffset-1 col-xs-10' onclick=createCookie('".$ruser."','".$this->id . "')>Add To My Cart</button>";
+                echo "</div>";
+            echo "</div>";
+        echo "</div>";
+    }
+}
+
+/* Test */
+//$item1 = new Item("car", 1, 100000, 120000, "lorem ipsum", "path");
+//echo $item1->intoDb();
+
+//$item1 = Item::fromDB(6);
+//var_dump($item1);
+
+/* Test */
+
+//$items = Item::GetItems();
+//$items = Item::GetItems(2);
+//var_dump($items);
+    
+/* Test */
+//$item1->Draw();

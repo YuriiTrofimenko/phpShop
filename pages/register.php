@@ -28,7 +28,6 @@ if (!isset($_POST['regbtn'])) {
 }
 else
 {
-    include_once("classes.php");
     //upload processing
     if(is_uploaded_file($_FILES['imagepath']['tmp_name']))
     {

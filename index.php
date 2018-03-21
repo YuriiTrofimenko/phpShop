@@ -1,7 +1,6 @@
 <?php
 session_start();
-//include_once("pages/functions.php");
-//echo connect();
+include_once("classes.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,14 +30,24 @@ session_start();
             <div class="row">
                 <section class="col-sm-12 col-md-12 col-lg-12">
                     <?php
-                    if (isset($_GET['page'])) {
+                    if (!isset($_GET['page'])) {
+                        $page = 1;
+                    } else {
+                        
                         $page = $_GET['page'];
+                    }
+                        
+                        //var_dump($page);
+                        //die();
+                        
                         switch ($page) {
-                            /*case 1 : {
-                                    include_once('pages/tours.php');
+                            case 1 : {
+                                    echo '<div class="container">';
+                                        include_once('pages/catalog.php');
+                                    echo '</div>';
                                     break;
                                 }
-                            case 2 : {
+                            /*case 2 : {
                                     include_once('pages/comments.php');
                                     break;
                                 }*/
@@ -46,11 +55,11 @@ session_start();
                                     include_once('pages/register.php');
                                     break;
                                 }
-                            /*case 4 : {
+                            case 4 : {
                                     include_once('pages/admin.php');
                                     break;
                                 }
-                            case 5 : {
+                            /*case 5 : {
                                     if (isset($_SESSION['radmin'])) {
                                         include_once('pages/private.php');
                                         break;
@@ -58,7 +67,7 @@ session_start();
                                 }*/
                             default : {echo '<span>Error 404</span>'; }
                         }
-                    }
+                    
                     ?>
                 </section>
             </div>
