@@ -12,6 +12,7 @@ include_once("classes.php");
         <link rel="stylesheet" href="css/custom.css">
     </head>
     <body>
+        <script src="js/jquery-3.3.1.min.js"></script>
         <div class="container">
             <div class="row">
                 <header class="col-sm-12 col-md-12 col-lg-12">
@@ -47,10 +48,10 @@ include_once("classes.php");
                                     echo '</div>';
                                     break;
                                 }
-                            /*case 2 : {
-                                    include_once('pages/comments.php');
+                            case 2 : {
+                                    include_once('pages/cart.php');
                                     break;
-                                }*/
+                                }
                             case 3 : {
                                     include_once('pages/register.php');
                                     break;
@@ -79,7 +80,6 @@ include_once("classes.php");
                 </footer>
             </div>
         </div>
-        <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/jquery.validate.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/custom.js"></script>

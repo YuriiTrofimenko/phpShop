@@ -46,4 +46,10 @@ function getItemsCat(cat)
     ao.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     ao.send("cat="+cat);
 }
+
+function createCookie(uname, id)
+{
+    var date = new Date(new Date().getTime() + 60 * 1000 * 30);
+    document.cookie = uname+"="+id+"; path=/;expires=" + date.toUTCString();
+}
 </script>

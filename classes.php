@@ -278,6 +278,62 @@ class Item {
             echo "</div>";
         echo "</div>";
     }
+    
+    function DrawForCart() {
+        echo "<div class='row' style='margin:2px;'>";
+        echo "<div class='container'";
+        echo "<div class='col-sm-3 col-md-3 col-lg-3'>";
+            echo "<img src='" . $this->imagepath . "' width='150px' class='col-sm-1 col-md-1 col-lg-1'/>";
+            echo "<span style='marginright:10px;background-color:#ddeeaa;color:blue;font-size:16pt' class='col-sm-3 colmd-3 col-lg-3'>";
+            echo $this->itemname;
+        echo "</span>";
+        echo "<span style='marginleft:10px;color:red;font-size:16pt;background-color:#ddeeaa;'class='col-sm-2 col-md-2 col-lg-2' >";
+        echo "$&nbsp;" . $this->pricesale;
+        echo "</span>";
+        $ruser = '';
+        if (!isset($_SESSION['reg']) || $_SESSION['reg'] == "") {
+            $ruser = "cart_" . $this->id;
+        } else {
+            $ruser = $_SESSION['reg'] . "_" . $this->id;
+        }
+        echo "<button class='btn btn-sm btn-danger' style='margin-left:10px;' onclick=eraseCookie('" . $ruser . "')>x</button>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+    }
+
+    function Sale() {
+        try {
+            $pdo = Tools::connect();
+            $ruser = 'cart';
+            if(isset($_SESSION['reg']) && $_SESSION['reg'] != "") {
+                $ruser = $_SESSION['reg'];
+            }
+            //Incresing total field for Customer
+            $sql = "UPDATE Customers SET total = total + ? WHERE login = ?";
+            $ps = $pdo->prepare($sql);
+            $ps->execute(array($this->pricesale, $ruser));
+            //Inserting info about sold item into table Sales
+            $ins = "insert into Sales (customername,itemname,pricein,pricesale,datesale) values(?,?,?,?,?)";
+            $ps = $pdo->prepare($ins);
+            $ps->execute(
+                    [$ruser
+                    , $this->itemname
+                    , $this->pricein
+                    , $this->pricesale
+                    , date("Y/m/d H:i:s")
+                    ]
+                    );
+            //deleting item from Items table
+            $del = "DELETE FROM Items WHERE id = ?";
+            $ps = $pdo->prepare($del);
+            $ps->execute([$this->id]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
 }
 
 /* Test */

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 19 2018 г., 12:37
+-- Время создания: Мар 21 2018 г., 12:23
 -- Версия сервера: 5.6.38
 -- Версия PHP: 7.2.0
 
@@ -33,6 +33,14 @@ CREATE TABLE `Categories` (
   `category` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `Categories`
+--
+
+INSERT INTO `Categories` (`id`, `category`) VALUES
+(2, 'devices'),
+(1, 'transport');
+
 -- --------------------------------------------------------
 
 --
@@ -48,6 +56,13 @@ CREATE TABLE `Customers` (
   `total` int(11) DEFAULT NULL,
   `imagepath` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `Customers`
+--
+
+INSERT INTO `Customers` (`id`, `login`, `pass`, `roleid`, `discount`, `total`, `imagepath`) VALUES
+(1, 'login1', '123', 2, 0, 0, 'images/skolko-stoit-horek-1-e1483355894279.jpg');
 
 -- --------------------------------------------------------
 
@@ -78,6 +93,16 @@ CREATE TABLE `Items` (
   `imagepath` varchar(256) NOT NULL,
   `action` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `Items`
+--
+
+INSERT INTO `Items` (`id`, `itemname`, `catid`, `pricein`, `pricesale`, `info`, `rate`, `imagepath`, `action`) VALUES
+(7, 'dvfdsv', 2, 2132, 314, 'vfgbfdh', 0, 'images/Chrysanthemum.jpg', 0),
+(8, 'fgdg', 2, 4323, 45356, 'bvfgbngfhn', 0, 'images/Desert.jpg', 0),
+(9, 'safcdasf', 1, 324, 432523, 'fdgfeg', 0, 'images/Hydrangeas.jpg', 0),
+(10, 'febgh', 1, 3432, 4365476, 'rehgethrth', 0, 'images/Jellyfish.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -187,13 +212,13 @@ ALTER TABLE `SubCategories`
 -- AUTO_INCREMENT для таблицы `Categories`
 --
 ALTER TABLE `Categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `Customers`
 --
 ALTER TABLE `Customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `Images`
@@ -205,7 +230,7 @@ ALTER TABLE `Images`
 -- AUTO_INCREMENT для таблицы `Items`
 --
 ALTER TABLE `Items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `Roles`
@@ -217,7 +242,7 @@ ALTER TABLE `Roles`
 -- AUTO_INCREMENT для таблицы `Sales`
 --
 ALTER TABLE `Sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `SubCategories`
